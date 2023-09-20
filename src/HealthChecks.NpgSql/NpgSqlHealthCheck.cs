@@ -22,6 +22,8 @@ namespace HealthChecks.NpgSql
             {
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
+                    Console.WriteLine($"Calling npgsql health check using a connection string: {connection.ConnectionString}");
+
                     _connectionAction?.Invoke(connection);
 
                     await connection.OpenAsync(cancellationToken);

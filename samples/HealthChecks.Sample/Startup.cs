@@ -25,14 +25,8 @@ namespace HealthChecks.Sample
             services
                 .AddApplicationInsightsTelemetry()
                 .AddHealthChecks()
-                //.AddRabbitMQ(rabbitConnectionString: "amqp://localhost:5672", name: "rabbit1")
-                //.AddRabbitMQ(rabbitConnectionString: "amqp://localhost:6672", name: "rabbit2")
-                //.AddSqlServer(connectionString: Configuration["Data:ConnectionStrings:Sample"])
-                .AddCheck<RandomHealthCheck>("random")
-                //.AddIdentityServer(new Uri("http://localhost:6060"))
-                //.AddAzureServiceBusQueue("Endpoint=sb://unaidemo.servicebus.windows.net/;SharedAccessKeyName=policy;SharedAccessKey=5RdimhjY8yfmnjr5L9u5Cf0pCFkbIM7u0HruJuhjlu8=", "que1")
-                //.AddAzureServiceBusTopic("Endpoint=sb://unaidemo.servicebus.windows.net/;SharedAccessKeyName=policy;SharedAccessKey=AQhdhXwnkzDO4Os0abQV7f/kB6esTfz2eFERMYKMsKk=", "to1")
-                .AddApplicationInsightsPublisher(saveDetailedReport: true);
+                .AddNpgSql("Server=localhost1", name: "npg1")
+                .AddNpgSql("Server=localhost2", name: "npg2");
 
             services.AddControllers();
         }
@@ -50,7 +44,6 @@ namespace HealthChecks.Sample
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 })
-                .UseHealthChecksPrometheusExporter("/metrics")
                 .UseRouting()
                 .UseEndpoints(config => config.MapDefaultControllerRoute());
         }
